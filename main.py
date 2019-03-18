@@ -22,7 +22,7 @@ for h in range(1, height + 1):
     print(row)
 
 print("Please choose X's or O's")
-
+i = input()
 
 # TODO: ask the user to choose aa team and store it
 # TODO: ask the user for a move (x,y)
