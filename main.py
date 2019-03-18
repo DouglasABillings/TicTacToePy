@@ -21,6 +21,9 @@ for h in range(1, height + 1):
         row += '#'
     print(row)
 
+print("Please choose X's or O's")
+
+
 # TODO: ask the user to choose aa team and store it
 # TODO: ask the user for a move (x,y)
 # TODO: re-render the game with their played move
