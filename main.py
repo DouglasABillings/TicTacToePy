@@ -21,8 +21,21 @@ for h in range(1, height + 1):
         row += '#'
     print(row)
 
-print("Please choose X's or O's")
-i = input()
+
+def input_team():
+    # user team option
+    team = ''
+    while team is not 'x' or 'o':
+        team = input("Choose a team, X's or O's\n").lower()
+
+        if team == 'x' or team == 'o':
+            return team
+            block
+
+
+player_team = input_team()
+
+print(player_team)
 
 # TODO: ask the user to choose aa team and store it
 # TODO: ask the user for a move (x,y)
