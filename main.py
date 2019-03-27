@@ -30,15 +30,29 @@ def input_team():
 
         if team == 'x' or team == 'o':
             return team
-            block
+
+
+def user_move():
+    # tuple for user prompt
+    x, y = 0, 0
+    while x not in range(1, height + 1):
+        while y not in range(1, width + 1):
+            try:
+                # We have to handle this in a try catch block, because it may throw an exception
+                x, y = map(int, input("Please enter your move in the form of x y\n").split())
+            except ValueError:
+                # Make sure to handle a ValueError exception
+                x, y = 0, 0
+    return x, y
 
 
 player_team = input_team()
 
 print(player_team)
+move = user_move()
 
-# TODO: ask the user to choose aa team and store it
-# TODO: ask the user for a move (x,y)
+print(move)
+
 # TODO: re-render the game with their played move
 # TODO: randomly choose an empty cell for the other team
 # TODO: re-render the game
