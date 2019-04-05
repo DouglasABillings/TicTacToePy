@@ -4,35 +4,38 @@
 # 2###
 # 3###
 
-# Here the width and height of the grid
-height = 3
-width = 3
 
-# Render the first row of indexes
-index_row = " "
-for n in range(1, width + 1):
-    index_row += str(n)
-print(index_row)
-
-# Render the game grid
-for h in range(1, height + 1):
-    row = str(h)
+def render_board(height, width, player_move, player_team, comp_move, comp_team):
+    # Render the first row of indexes
+    index_row = " "
     for n in range(1, width + 1):
-        row += '#'
-    print(row)
+        index_row += str(n)
+    print(index_row)
+
+    # Render the game grid
+    for x in range(1, height + 1):
+        row = str(x)
+        for y in range(1, width + 1):
+            if (x, y) in player_move:
+                row += player_team
+            elif (x, y) in comp_move:
+                row += comp_team
+            else:
+                row += '#'
+        print(row)
 
 
 def input_team():
     # user team option
-    team = ''
-    while team is not 'x' or 'o':
-        team = input("Choose a team, X's or O's\n").lower()
+    team_var = ''
+    while team_var is not 'X' or 'O':
+        team_var = input("Choose a team, X's or O's\n").upper()
 
-        if team == 'x' or team == 'o':
-            return team
+        if team_var == 'X' or team_var == 'O':
+            return team_var
 
 
-def user_move():
+def user_move(height, width):
     # tuple for user prompt
     x, y = 0, 0
     while x not in range(1, height + 1):
@@ -42,16 +45,25 @@ def user_move():
                 x, y = map(int, input("Please enter your move in the form of x y\n").split())
             except ValueError:
                 # Make sure to handle a ValueError exception
-                x, y = 0, 0
-    return x, y
+                x, y = (0, 0)
+    return {(x, y)}
 
 
-player_team = input_team()
+def main():
+    height = 3
+    width = 3
+    player_move = {(3, 2)}
+    comp_move = {(3, 1)}
+    comp_team = None
+    player_team = input_team()
+    comp_team = 'O' if player_team == 'X' else comp_team == 'X'
+    render_board(height, width, player_move, player_team, comp_move, comp_team)
+    player_move = user_move(height, width)
+    render_board(height, width, player_move, player_team, comp_move, comp_team)
 
-print(player_team)
-move = user_move()
 
-print(move)
+main()
+
 
 # TODO: re-render the game with their played move
 # TODO: randomly choose an empty cell for the other team
