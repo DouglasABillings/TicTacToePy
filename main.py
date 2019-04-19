@@ -94,55 +94,67 @@ def game_over(player_moves, comp_moves, width, height):
         row_set = set()
         for x in range(1, width + 1):
             row_set.add((x, y))
-        row_win = row_set.issubset(player_moves)
-        if row_win is True:
-            print("horizontal win")
+        if row_set.issubset(player_moves):
+            return True, "Player"
+        elif row_set.issubset(comp_moves):
+            return True, "Computer"
     # Checking the Columns
     for x in range(1, width + 1):
         col_set = set()
         for y in range(1, height + 1):
             col_set.add((x, y))
-        col_win = col_set.issubset(player_moves)
-        if col_win is True:
-            print("vertical win")
+        if col_set.issubset(player_moves):
+            return True, "Player"
+        elif col_set.issubset(comp_moves):
+            return True, "Computer"
     # Checking the Diagonal
-    for y in range(1, height + 1):
-        diag_set = set()
-        for x in range(1, width + 1):
-            diag_set.add((x, y))
-            y += 1
-        diag_win = diag_set.issubset(player_moves)
-        if diag_win is True:
-            print("diagonal win")
-        else:
-            return False, None
-
-# TODO: Check for a tie
-# TODO: Otherwise the game isn't over
+    first_diag_set = set()
+    second_diag_set = set()
+    for x in range(1, height + 1):
+        first_diag_set.add((x, x))
+        second_diag_set.add((x, width + 1 - x))
+    if first_diag_set.issubset(player_moves) or second_diag_set.issubset(player_moves):
+        print("diagonal win")
+    elif first_diag_set.issubset(comp_moves) or second_diag_set.issubset(comp_moves):
+        return True, "Computer"
+    if len(player_moves.union(comp_moves)) == width * height:
+        return True, None
+    else:
+        return False, None
 
 
 def main():
-    height = 3
-    width = 3
-    win_condition = False
-    player_moves = {()}
-    comp_moves = {()}
+    width = height = 3
+    is_over = False
+    player_moves = set()
+    comp_moves = set()
     player_team = input_team()
     # assign comp_team all in one line using a ternary expression
     comp_team = 'O' if player_team == 'X' else 'X'
 
-    while win_condition is False:
+    while not is_over :
         # simple loop to render the board and get player move and computer move
         render_board(height, width, player_moves, player_team, comp_moves, comp_team)
+
         # add a move to the player set
-        player_moves.add(user_move(height, width))
-        comp_moves.add(comp_move(height, width))
-        game_over(player_moves, comp_moves, width, height)
-    if win_condition is True:
-        print("Good Game, want to play another? (y/n)")
+        move = user_move(height, width)
+        while move in player_moves.union(comp_moves):
+            move = user_move(height, width)
+        player_moves.add(move)
+
+        move = comp_move(height, width)
+        while move in comp_moves.union(player_moves):
+            move = comp_move(height, width)
+        comp_moves.add(move)
+
+        is_over, winning_player = game_over(player_moves, comp_moves, width, height)
+
+    print("Good Game " + winning_player)
 
 
-main()
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()
 
 # TODO: randomly choose an empty cell for the other team
 # TODO: repeat until the game is over (win, loss, or tie)
